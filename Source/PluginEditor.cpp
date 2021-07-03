@@ -78,17 +78,11 @@ void AudioPlayerAudioProcessorEditor::openButtonClicked()
 
 void AudioPlayerAudioProcessorEditor::playButtonClicked()
 {
-    if ((state == AudioPlayerAudioProcessor::TransportState::Stopped) || (state == AudioPlayerAudioProcessor::TransportState::Paused))
+    //if ((AudioPlayerAudioProcessor::TransportState() == AudioPlayerAudioProcessor::TransportState::Stopped) || (AudioPlayerAudioProcessor::TransportState() == AudioPlayerAudioProcessor::TransportState::Paused))
     {
         audioProcessor.changeState(AudioPlayerAudioProcessor::TransportState::Starting);
-        //playButton.setButtonText("Pause");
+        playButton.setButtonText("Playing");
     }
-    else if (state == AudioPlayerAudioProcessor::TransportState::Playing)
-    {
-        audioProcessor.changeState(AudioPlayerAudioProcessor::TransportState::Pausing);
-        playButton.setButtonText("Resume");
-    }
-    //stopButton.setButtonText("Stop");
     pauseButton.setEnabled(true);
     openButton.setEnabled(false);
     stopButton.setEnabled(true);
@@ -99,22 +93,14 @@ void AudioPlayerAudioProcessorEditor::pauseButtonClicked()
     //if (state == AudioPlayerAudioProcessor::TransportState::Playing)
     {
         audioProcessor.changeState(AudioPlayerAudioProcessor::TransportState::Pausing);
-        //pauseButton.setButtonText("Resume");
+        playButton.setButtonText("Resume");
     }
 }
 
 void AudioPlayerAudioProcessorEditor::stopButtonClicked()
 {
-    if (state == AudioPlayerAudioProcessor::TransportState::Paused) 
-    {
-        audioProcessor.changeState(AudioPlayerAudioProcessor::TransportState::Stopped);
-    }
-    else
-    {
-        audioProcessor.changeState(AudioPlayerAudioProcessor::TransportState::Stopping);
-    }
+    audioProcessor.changeState(AudioPlayerAudioProcessor::TransportState::Stopped);
     playButton.setButtonText("Play");
-    //stopButton.setButtonText("Stop");
     openButton.setEnabled(true);
     pauseButton.setEnabled(false);
 }
@@ -127,16 +113,6 @@ void AudioPlayerAudioProcessorEditor::addAudioFile()
         audioSource = chooser.getResult();
         audioProcessor.loadFile(audioSource);
         juce::String labelText = "Audio File Loaded:  " + audioSource.getFileName();
-        audioSourceLabel.setText(labelText, juce::NotificationType::dontSendNotification); \
-            //auto file = chooser.getResult();                                        
-            //auto* reader = formatManager.createReaderFor(file);                   
-
-            //if (reader != nullptr)
-        {
-            //std::unique_ptr<juce::AudioFormatReaderSource> newSource(new juce::AudioFormatReaderSource(reader, true));
-            //transportSource.setSource(newSource.get(), 0, nullptr, reader->sampleRate);                                
-            //playButton.setEnabled(true);                                                                                
-            //readerSource.reset(newSource.release());                                                                   
-        }
+        audioSourceLabel.setText(labelText, juce::NotificationType::dontSendNotification);
     }
 }

@@ -189,33 +189,33 @@ void AudioPlayerAudioProcessor::setStateInformation (const void* data, int sizeI
     // whose contents will have been created by the getStateInformation() call.
 }
 
-void AudioPlayerAudioProcessor::changeState(TransportState newState)
+void AudioPlayerAudioProcessor::changeState(AudioPlayerAudioProcessor::TransportState newState)
 {
     if (state != newState)
     {
         state = newState;
         switch (state)
         {
-        case Stopped:
+        case AudioPlayerAudioProcessor::TransportState::Stopped:
             transportSource.setPosition(0.0);
             break;
 
-        case Starting:
+        case AudioPlayerAudioProcessor::TransportState::Starting:
             transportSource.start();
             break;
 
-        case Playing:
+        case AudioPlayerAudioProcessor::TransportState::Playing:
             break;
 
-        case Pausing:
+        case AudioPlayerAudioProcessor::TransportState::Pausing:
             transportSource.stop();
             break;
 
-        case Paused:
+        case AudioPlayerAudioProcessor::TransportState::Paused:
             transportSource.stop();
             break;
 
-        case Stopping:
+        case AudioPlayerAudioProcessor::TransportState::Stopping:
             transportSource.stop();
             break;
         }
@@ -240,19 +240,15 @@ void AudioPlayerAudioProcessor::changeListenerCallback(juce::ChangeBroadcaster* 
     {
         if (transportSource.isPlaying())
         {
-            changeState(Playing);
-        }
-        else if (state == AudioPlayerAudioProcessor::TransportState::Starting)
-        {
-            changeState(Playing);
+            changeState(AudioPlayerAudioProcessor::TransportState::Playing);
         }
         else if (state == AudioPlayerAudioProcessor::TransportState::Stopping)
         {
-            changeState(Stopped);
+            changeState(AudioPlayerAudioProcessor::TransportState::Stopped);
         }
         else if (state == AudioPlayerAudioProcessor::TransportState::Pausing)
         {
-            changeState(Paused);
+            changeState(AudioPlayerAudioProcessor::TransportState::Paused);
         }
     }
 }

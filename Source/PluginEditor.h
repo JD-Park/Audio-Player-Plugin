@@ -17,15 +17,7 @@
 class AudioPlayerAudioProcessorEditor  : public juce::AudioProcessorEditor
 {
 public:
-    enum TransportState
-    {
-        Stopped,
-        Starting,
-        Playing,
-        Pausing,
-        Paused,
-        Stopping
-    };
+
     AudioPlayerAudioProcessorEditor (AudioPlayerAudioProcessor&);
     ~AudioPlayerAudioProcessorEditor() override;
 
@@ -44,7 +36,6 @@ private:
     juce::TextButton pauseButton;
     juce::Label audioSourceLabel;
     juce::File audioSource;
-    TransportState state;
 
 
     void openButtonClicked();

@@ -17,7 +17,7 @@ class AudioPlayerAudioProcessor  : public juce::AudioProcessor, public juce::Cha
 {
 public:
 
-    enum TransportState
+    enum class TransportState
     {
         Stopped,
         Starting,
@@ -70,9 +70,6 @@ public:
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPlayerAudioProcessor)
-
-    juce::TextButton playButton;
-    juce::TextButton stopButton;
 
     juce::AudioFormatManager formatManager;
     std::unique_ptr<juce::AudioFormatReaderSource> readerSource;
