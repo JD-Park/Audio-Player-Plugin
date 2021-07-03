@@ -156,9 +156,9 @@ void AudioPlayerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
     // the samples and the outer loop is handling the channels.
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    //for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
-        auto* channelData = buffer.getWritePointer (channel);
+       //auto* channelData = buffer.getWritePointer (channel);
 
         // ..do something to the data...
     }
@@ -189,32 +189,31 @@ void AudioPlayerAudioProcessor::setStateInformation (const void* data, int sizeI
     // whose contents will have been created by the getStateInformation() call.
 }
 
-void AudioPlayerAudioProcessor::changeState(AudioPlayerAudioProcessor::AudioPlayerAudioProcessor::TransportState newState)
+void AudioPlayerAudioProcessor::changeState(TransportState newState)
 {
     if (state != newState)
     {
         state = newState;
         switch (state)
         {
-        case AudioPlayerAudioProcessor::TransportState::Stopped:
+        case Stopped:
             transportSource.setPosition(0.0);
             break;
 
-        case AudioPlayerAudioProcessor::TransportState::Starting:
+        case Starting:
             transportSource.start();
             break;
 
-        case AudioPlayerAudioProcessor::TransportState::Playing:
+        case Playing:
             break;
 
-        //case Pausing:
-            //transportSource.stop();
-            //break;
+        case Pausing:
+            transportSource.stop();
+            break;
 
-        //case Paused:
-            //playButton.setButtonText("Resume");
-            //stopButton.setButtonText("Return to Zero");
-            //break;
+        case Paused:
+            transportSource.stop();
+            break;
 
         case Stopping:
             transportSource.stop();
@@ -241,15 +240,19 @@ void AudioPlayerAudioProcessor::changeListenerCallback(juce::ChangeBroadcaster* 
     {
         if (transportSource.isPlaying())
         {
-            changeState(AudioPlayerAudioProcessor::TransportState::Playing);
-        }else
-        //else if((state == Stopping) || (state == Playing))
-        {
-            changeState(AudioPlayerAudioProcessor::TransportState::Stopped);
+            changeState(Playing);
         }
-        //else if (Pausing == state)
+        else if (state == AudioPlayerAudioProcessor::TransportState::Starting)
         {
-            //changeState(Paused);
+            changeState(Playing);
+        }
+        else if (state == AudioPlayerAudioProcessor::TransportState::Stopping)
+        {
+            changeState(Stopped);
+        }
+        else if (state == AudioPlayerAudioProcessor::TransportState::Pausing)
+        {
+            changeState(Paused);
         }
     }
 }
