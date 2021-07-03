@@ -28,6 +28,12 @@ AudioPlayerAudioProcessorEditor::AudioPlayerAudioProcessorEditor (AudioPlayerAud
     playButton.setColour(juce::TextButton::buttonColourId, juce::Colours::green);
     playButton.setEnabled(false);
 
+    addAndMakeVisible(pauseButton);
+    pauseButton.setButtonText("Pause");
+    pauseButton.onClick = [this] { pauseButtonClicked(); };
+    pauseButton.setColour(juce::TextButton::buttonColourId, juce::Colours::grey);
+    pauseButton.setEnabled(false);
+
     addAndMakeVisible(stopButton);
     stopButton.setButtonText("Stop");
     stopButton.onClick = [this] { stopButtonClicked(); };
@@ -58,8 +64,9 @@ void AudioPlayerAudioProcessorEditor::resized()
     int rMargin = lMargin * 2;
     openButton.setBounds(lMargin, 10, getWidth() - rMargin, 40);
     playButton.setBounds(lMargin, 60, getWidth() - rMargin, 40);
-    stopButton.setBounds(lMargin, 110, getWidth() - rMargin, 40);
-    audioSourceLabel.setBounds(lMargin, 170, getWidth() - rMargin, 40);
+    stopButton.setBounds(lMargin, 160, getWidth() - rMargin, 40);
+    pauseButton.setBounds(lMargin, 110, getWidth() - rMargin, 40);
+    audioSourceLabel.setBounds(lMargin, 210, getWidth() - rMargin, 40);
 
 }
 
@@ -71,17 +78,42 @@ void AudioPlayerAudioProcessorEditor::openButtonClicked()
 
 void AudioPlayerAudioProcessorEditor::playButtonClicked()
 {
-    audioProcessor.changeState(AudioPlayerAudioProcessor::TransportState::Starting);
-    //playButton.setButtonText("Pause");
+    if ((state == AudioPlayerAudioProcessor::TransportState::Stopped) || (state == AudioPlayerAudioProcessor::TransportState::Paused))
+    {
+        audioProcessor.changeState(AudioPlayerAudioProcessor::TransportState::Starting);
+        //playButton.setButtonText("Pause");
+    }
+    else if (state == AudioPlayerAudioProcessor::TransportState::Playing)
+    {
+        audioProcessor.changeState(AudioPlayerAudioProcessor::TransportState::Pausing);
+        playButton.setButtonText("Resume");
+    }
     //stopButton.setButtonText("Stop");
+    pauseButton.setEnabled(true);
     openButton.setEnabled(false);
     stopButton.setEnabled(true);
 }
 
+void AudioPlayerAudioProcessorEditor::pauseButtonClicked()
+{
+    //if (state == AudioPlayerAudioProcessor::TransportState::Playing)
+    {
+        audioProcessor.changeState(AudioPlayerAudioProcessor::TransportState::Pausing);
+        //pauseButton.setButtonText("Resume");
+    }
+}
+
 void AudioPlayerAudioProcessorEditor::stopButtonClicked()
 {
-    audioProcessor.changeState(AudioPlayerAudioProcessor::TransportState::Stopping);
-    //playButton.setButtonText("Play");
+    if (state == AudioPlayerAudioProcessor::TransportState::Paused) 
+    {
+        audioProcessor.changeState(AudioPlayerAudioProcessor::TransportState::Stopped);
+    }
+    else
+    {
+        audioProcessor.changeState(AudioPlayerAudioProcessor::TransportState::Stopping);
+    }
+    playButton.setButtonText("Play");
     //stopButton.setButtonText("Stop");
     openButton.setEnabled(true);
 }

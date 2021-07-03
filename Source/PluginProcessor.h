@@ -22,8 +22,8 @@ public:
         Stopped,
         Starting,
         Playing,
-        //Pausing,
-        //Paused,
+        Pausing,
+        Paused,
         Stopping
     };
 
@@ -71,8 +71,8 @@ private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPlayerAudioProcessor)
 
-    //juce::TextButton playButton;
-    //juce::TextButton stopButton;
+    juce::TextButton playButton;
+    juce::TextButton stopButton;
 
     juce::AudioFormatManager formatManager;
     std::unique_ptr<juce::AudioFormatReaderSource> readerSource;

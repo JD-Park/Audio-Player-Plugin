@@ -17,6 +17,15 @@
 class AudioPlayerAudioProcessorEditor  : public juce::AudioProcessorEditor
 {
 public:
+    enum TransportState
+    {
+        Stopped,
+        Starting,
+        Playing,
+        Pausing,
+        Paused,
+        Stopping
+    };
     AudioPlayerAudioProcessorEditor (AudioPlayerAudioProcessor&);
     ~AudioPlayerAudioProcessorEditor() override;
 
@@ -32,13 +41,18 @@ private:
     juce::TextButton openButton;
     juce::TextButton playButton;
     juce::TextButton stopButton;
+    juce::TextButton pauseButton;
     juce::Label audioSourceLabel;
     juce::File audioSource;
+    TransportState state;
+
 
     void openButtonClicked();
     void playButtonClicked();
     void stopButtonClicked();
+    void pauseButtonClicked();
     void addAudioFile();
+
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPlayerAudioProcessorEditor)
