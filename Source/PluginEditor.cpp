@@ -43,6 +43,10 @@ AudioPlayerAudioProcessorEditor::AudioPlayerAudioProcessorEditor (AudioPlayerAud
     addAndMakeVisible(audioSourceLabel);
     audioSourceLabel.setColour(audioSourceLabel.textColourId, juce::Colours::white);
     audioSourceLabel.setText("Please open a file", juce::NotificationType::dontSendNotification);
+
+    addAndMakeVisible(currentTime);
+    currentTime.setColour(audioSourceLabel.textColourId, juce::Colours::white);
+    currentTime.setText("Time: ", juce::NotificationType::dontSendNotification);
 }
 
 AudioPlayerAudioProcessorEditor::~AudioPlayerAudioProcessorEditor()
@@ -67,7 +71,7 @@ void AudioPlayerAudioProcessorEditor::resized()
     stopButton.setBounds(lMargin, 160, getWidth() - rMargin, 40);
     pauseButton.setBounds(lMargin, 110, getWidth() - rMargin, 40);
     audioSourceLabel.setBounds(lMargin, 210, getWidth() - rMargin, 40);
-
+    currentTime.setBounds(lMargin, 250, getWidth() - rMargin, 40);
 }
 
 void AudioPlayerAudioProcessorEditor::openButtonClicked()

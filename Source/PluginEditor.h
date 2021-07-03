@@ -35,6 +35,7 @@ private:
     juce::TextButton stopButton;
     juce::TextButton pauseButton;
     juce::Label audioSourceLabel;
+    juce::Label currentTime;
     juce::File audioSource;
 
 
