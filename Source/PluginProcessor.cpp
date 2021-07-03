@@ -242,14 +242,6 @@ void AudioPlayerAudioProcessor::changeListenerCallback(juce::ChangeBroadcaster* 
         {
             changeState(AudioPlayerAudioProcessor::TransportState::Playing);
         }
-        else if (state == AudioPlayerAudioProcessor::TransportState::Stopping)
-        {
-            changeState(AudioPlayerAudioProcessor::TransportState::Stopped);
-        }
-        else if (state == AudioPlayerAudioProcessor::TransportState::Pausing)
-        {
-            changeState(AudioPlayerAudioProcessor::TransportState::Paused);
-        }
     }
 }
 

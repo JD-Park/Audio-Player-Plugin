@@ -82,7 +82,7 @@ void AudioPlayerAudioProcessorEditor::openButtonClicked()
 
 void AudioPlayerAudioProcessorEditor::playButtonClicked()
 {
-    //if ((AudioPlayerAudioProcessor::TransportState() == AudioPlayerAudioProcessor::TransportState::Stopped) || (AudioPlayerAudioProcessor::TransportState() == AudioPlayerAudioProcessor::TransportState::Paused))
+    if (AudioPlayerAudioProcessor::TransportState() == AudioPlayerAudioProcessor::TransportState::Stopped)
     {
         audioProcessor.changeState(AudioPlayerAudioProcessor::TransportState::Starting);
         playButton.setButtonText("Playing");
@@ -97,16 +97,20 @@ void AudioPlayerAudioProcessorEditor::pauseButtonClicked()
     //if (state == AudioPlayerAudioProcessor::TransportState::Playing)
     {
         audioProcessor.changeState(AudioPlayerAudioProcessor::TransportState::Pausing);
+        audioProcessor.changeState(AudioPlayerAudioProcessor::TransportState::Paused);
         playButton.setButtonText("Resume");
     }
 }
 
 void AudioPlayerAudioProcessorEditor::stopButtonClicked()
 {
-    audioProcessor.changeState(AudioPlayerAudioProcessor::TransportState::Stopped);
-    playButton.setButtonText("Play");
-    openButton.setEnabled(true);
-    pauseButton.setEnabled(false);
+    {
+        audioProcessor.changeState(AudioPlayerAudioProcessor::TransportState::Stopping);
+        audioProcessor.changeState(AudioPlayerAudioProcessor::TransportState::Stopped);
+        playButton.setButtonText("Play");
+        openButton.setEnabled(true);
+        pauseButton.setEnabled(false);
+    }
 }
 
 void AudioPlayerAudioProcessorEditor::addAudioFile()
